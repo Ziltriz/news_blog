@@ -45,6 +45,9 @@ class Post (models.Model):
     def prewiev(self):
         return self.text[:124] + '...'
 
+    def __str__(self):
+        return f'{self.article[:20]}'
+
 
 class Comment (models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
