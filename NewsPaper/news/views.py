@@ -1,5 +1,10 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.views.generic.edit import CreateView
+from .forms import BaseRegisterForm
 
 from .filters import NewsFilter
 from .models import Post
@@ -33,26 +38,30 @@ class NewsSearch(ListView):
         return context
 
 class NewsCreate(CreateView):
+
     form_class = NewsForm
     model = Post
     template_name = 'news_create.html'
 
-class NewsUpdate(UpdateView):
+class NewsUpdate(LoginRequiredMixin, UpdateView,):
     form_class = NewsForm
     model = Post
     template_name = 'news_edit.html'
+
 
 class NewsDelete(DeleteView):
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('news')
 
-class PostCreate(CreateView):
+class PostCreate(CreateView, PermissionRequiredMixin):
+    permission_required = 'news.add_post'
     form_class = NewsForm
     model = Post
     template_name = 'post_create.html'
 
-class PostUpdate(UpdateView):
+class PostUpdate(UpdateView, PermissionRequiredMixin):
+    permission_required = 'news.update_post'
     form_class = NewsForm
     model = Post
     template_name = 'post_edit.html'
@@ -60,5 +69,10 @@ class PostUpdate(UpdateView):
 class PostDelete(DeleteView):
     model = Post
     template_name = 'post_delete.html'
-    success_url = reverse_lazy('news')
+    success_url = reverse_lazy('')
 
+
+class BaseRegisterView(CreateView):
+    model = User
+    form_class = BaseRegisterForm
+    success_url = '/'
