@@ -1,11 +1,10 @@
-from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView
-from django.core.mail import send_mail, EmailMultiAlternatives
+
 from django.shortcuts import render, reverse, redirect
 
 from .filters import NewsFilter
@@ -64,39 +63,9 @@ class NewsCreate(CreateView):
     model = Post
     template_name = 'news_create.html'
 
+    def get_success_url(self):
+        return reverse_lazy('news_list')
 
-    def post(self, request, *args, **kwargs):
-        post = Post(
-            author=Author.objects.get(pk=request.POST['author']),
-            type=request.POST['type'],
-            categories=Category.objects.get(pk=request.POST['categories']),
-            article=request.POST['article'],
-            text=request.POST['text'],
-            rating=request.POST['rating']
-        )
-
-        post.save()
-
-        subscribers_list = post.categories.subscribers.all()
-
-        html_content = render_to_string(
-            'news_cat.html',
-            {
-                'post': post,
-                'post_author': subscribers_list[0].username
-            }
-        )
-
-        msg = EmailMultiAlternatives(
-            subject=f'{post.article}',
-            body=f'Здравствуй, {post.categories}. Новая статья в твоём любимом разделе!',
-            from_email='awercool@yandex.by',
-            to=[subscriber.email for subscriber in subscribers_list]
-        )
-        msg.attach_alternative(html_content, "text/html")  # добавляем html
-        msg.send()
-
-        return redirect('/')
 
 class NewsUpdate(LoginRequiredMixin, UpdateView,):
     form_class = NewsForm

@@ -42,17 +42,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'news',
+    'news.apps.SimpleappConfig',
     'django.contrib.sites',
     'django.contrib.flatpages',
+    'django_apscheduler'
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    # ... include the providers you want to enable:
     'allauth.socialaccount.providers.google',
 ]
 
 SITE_ID = 1
+DEFAULT_FROM_EMAIL = 'awercool@yandex.by'
 LOGIN_URL = '/accounts/login/'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
@@ -66,6 +67,9 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = 'awercool@yandex.by'
 EMAIL_HOST_PASSWORD = 'pavKHAN121BNTU'
 EMAIL_USE_SSL = True
+
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
