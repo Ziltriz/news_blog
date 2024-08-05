@@ -5,12 +5,18 @@ from allauth.account.forms import SignupForm
 from django.contrib.auth.models import Group
 # Create your models here.
 
+
 class Category (models.Model):
     name = models.CharField(max_length=255, unique=True)
+    subscribers = models.ManyToManyField(User, related_name='subscribed_categories')
+
+    def __str__(self):
+        return f'{self.name}'
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0.0)
+    username = models.CharField(max_length=255)
 
     def update_rating(self):
 
@@ -21,17 +27,21 @@ class Author(models.Model):
         self.rating = articles_rating + comments_rating + article_comments_rating
         self.save()
 
+    def __str__(self):
+        return f'{self.user.username}'
+
 
 class PostCategories (models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
+
 
 class Post (models.Model):
     author = models.ForeignKey('Author', on_delete=models.CASCADE)
     type = models.CharField(choices={'news': 'Новость',
                                      'post': 'Статья'}, max_length=9)
     date_birth = models.DateTimeField(auto_now_add=True)
-    categories = models.ManyToManyField(Category)
+    categories = models.ForeignKey(Category, on_delete=models.CASCADE)
     article = models.CharField(default='Пустой заголовок', max_length=100)
     text = models.TextField(max_length=1000)
     rating = models.IntegerField(default=0)
@@ -74,6 +84,7 @@ class BasicSignupForm(SignupForm):
         basic_group = Group.objects.get(name='common')
         basic_group.user_set.add(user)
         return user
+
 
 
 

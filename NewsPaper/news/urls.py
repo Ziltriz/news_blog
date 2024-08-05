@@ -1,4 +1,4 @@
-from .views import NewsList, NewsDetail, NewsSearch, NewsCreate, NewsUpdate, NewsDelete, PostDelete, PostUpdate, PostCreate, BaseRegisterView
+from .views import NewsList, NewsDetail, NewsSearch, NewsCreate,subscribe, NewsUpdate, NewsDelete, PostDelete, PostUpdate, PostCreate, BaseRegisterView
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 
@@ -23,4 +23,6 @@ urlpatterns = [
     path('signup/',
          BaseRegisterView.as_view(template_name='sign/signup.html'),
          name='signup'),
+
+    path('subscribe/<int:pk>', subscribe, name='subscribe'),
 ]

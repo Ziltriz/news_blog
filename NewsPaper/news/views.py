@@ -1,24 +1,46 @@
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView
-from .forms import BaseRegisterForm
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.shortcuts import render, reverse, redirect
 
 from .filters import NewsFilter
-from .models import Post
+from .models import Post, Category, Author
 from .forms import NewsForm
+from .forms import BaseRegisterForm, SubscriptionForm
+
+@login_required
+def subscribe(request, pk):
+    if request.method == 'POST':
+        form = SubscriptionForm(request.POST)
+        if form.is_valid():
+            category = Category.objects.get(pk=pk)
+            user = User.objects.get(pk=request.user.pk)
+            category.subscribers.add(user)
+            category.save()
+            return redirect('./')
+    else:
+        form = SubscriptionForm()
+    return render(request, 'subscribe.html', {'form': form})
+
+
 class NewsList(ListView):
     queryset = Post.objects.order_by('-date_birth')
     template_name = 'news.html'
     context_object_name = 'news'
     paginate_by = 10
 
+
+
 class NewsDetail(DetailView):
     model = Post
     template_name = 'post.html'
     context_object_name = 'post'
+
 
 class NewsSearch(ListView):
     model = Post
@@ -38,10 +60,43 @@ class NewsSearch(ListView):
         return context
 
 class NewsCreate(CreateView):
-
     form_class = NewsForm
     model = Post
     template_name = 'news_create.html'
+
+
+    def post(self, request, *args, **kwargs):
+        post = Post(
+            author=Author.objects.get(pk=request.POST['author']),
+            type=request.POST['type'],
+            categories=Category.objects.get(pk=request.POST['categories']),
+            article=request.POST['article'],
+            text=request.POST['text'],
+            rating=request.POST['rating']
+        )
+
+        post.save()
+
+        subscribers_list = post.categories.subscribers.all()
+
+        html_content = render_to_string(
+            'news_cat.html',
+            {
+                'post': post,
+                'post_author': subscribers_list[0].username
+            }
+        )
+
+        msg = EmailMultiAlternatives(
+            subject=f'{post.article}',
+            body=f'Здравствуй, {post.categories}. Новая статья в твоём любимом разделе!',
+            from_email='awercool@yandex.by',
+            to=[subscriber.email for subscriber in subscribers_list]
+        )
+        msg.attach_alternative(html_content, "text/html")  # добавляем html
+        msg.send()
+
+        return redirect('/')
 
 class NewsUpdate(LoginRequiredMixin, UpdateView,):
     form_class = NewsForm

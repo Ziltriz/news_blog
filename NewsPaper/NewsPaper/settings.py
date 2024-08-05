@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import dotenv_values
+
+config = dotenv_values(".env")
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -55,6 +60,12 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_FORMS = {'signup': 'news.models.BasicSignupForm'}
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'awercool@yandex.by'
+EMAIL_HOST_PASSWORD = 'pavKHAN121BNTU'
+EMAIL_USE_SSL = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
