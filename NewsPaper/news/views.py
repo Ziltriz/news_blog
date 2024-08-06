@@ -5,12 +5,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView
 
-from django.shortcuts import render, reverse, redirect
+from django.shortcuts import render, redirect
 
 from .filters import NewsFilter
-from .models import Post, Category, Author
+from .models import Post, Category
 from .forms import NewsForm
 from .forms import BaseRegisterForm, SubscriptionForm
+from .tasks import notify_subscribers
 
 @login_required
 def subscribe(request, pk):
@@ -62,6 +63,10 @@ class NewsCreate(CreateView):
     form_class = NewsForm
     model = Post
     template_name = 'news_create.html'
+
+    def post(self, request, *args, **kwargs):
+        notify_subscribers.delay()
+        return super().post(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy('news_list')

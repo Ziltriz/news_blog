@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'news.apps.SimpleappConfig',
     'django.contrib.sites',
     'django.contrib.flatpages',
-    'django_apscheduler'
+    'celery',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -68,8 +68,11 @@ EMAIL_HOST_USER = 'awercool@yandex.by'
 EMAIL_HOST_PASSWORD = 'pavKHAN121BNTU'
 EMAIL_USE_SSL = True
 
-APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
-APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
