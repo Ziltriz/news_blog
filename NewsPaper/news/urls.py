@@ -1,12 +1,12 @@
 from .views import NewsList, NewsDetail, NewsSearch, NewsCreate,subscribe, NewsUpdate, NewsDelete, PostDelete, PostUpdate, PostCreate, BaseRegisterView
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
-
+from django.views.decorators.cache import cache_page
 
 
 urlpatterns = [
     path('', NewsList.as_view(), name='news_list'),
-    path('<int:pk>', NewsDetail.as_view(), name='news_detail'),
+    path('<int:pk>', cache_page(60*10)( NewsDetail.as_view()), name='news_detail'),
     path('search/', NewsSearch.as_view(), name='news_search'),
     path('news/create/', NewsCreate.as_view(), name='news_create'),
     path('news/<int:pk>/edit/', NewsUpdate.as_view(), name='news_edit'),

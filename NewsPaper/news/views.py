@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView
-
+from django.views.decorators.cache import cache_page
 from django.shortcuts import render, redirect
 
 from .filters import NewsFilter
@@ -34,8 +34,7 @@ class NewsList(ListView):
     context_object_name = 'news'
     paginate_by = 10
 
-
-
+@cache_page(60 * 15)
 class NewsDetail(DetailView):
     model = Post
     template_name = 'post.html'
