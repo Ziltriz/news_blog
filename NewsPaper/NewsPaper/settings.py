@@ -30,9 +30,13 @@ SECRET_KEY = 'django-insecure-a&q#z74pqkcs34&&__jjq(qs3k6$#k=c8!un_f3d1c^26%&f44
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+USE_I18N = True
 
 ALLOWED_HOSTS = []
 
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale')
+]
 
 # Application definition
 
@@ -78,6 +82,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -111,7 +116,6 @@ TEMPLATES = [
 AUTHENTICATION_BACKENDS = [
 
     'django.contrib.auth.backends.ModelBackend',
-
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 ]

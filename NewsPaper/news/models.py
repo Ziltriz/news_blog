@@ -15,7 +15,7 @@ class Category (models.Model):
         return f'{self.name}'
 
 class Author(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_author')
     rating = models.IntegerField(default=0.0)
     username = models.CharField(max_length=255)
 
@@ -38,11 +38,11 @@ class PostCategories (models.Model):
 
 
 class Post (models.Model):
-    author = models.ForeignKey('Author', on_delete=models.CASCADE)
+    author = models.ForeignKey('Author', on_delete=models.CASCADE, related_name='author')
     type = models.CharField(choices={'news': 'Новость',
                                      'post': 'Статья'}, max_length=9)
     date_birth = models.DateTimeField(auto_now_add=True)
-    categories = models.ForeignKey(Category, on_delete=models.CASCADE)
+    categories = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category')
     article = models.CharField(default='Пустой заголовок', max_length=100)
     text = models.TextField(max_length=1000)
     rating = models.IntegerField(default=0)
@@ -55,7 +55,7 @@ class Post (models.Model):
         self.rating -= 1
         self.save()
 
-    def prewiev(self):
+    def preview(self):
         return self.text[:124] + '...'
 
     def __str__(self):
@@ -63,8 +63,8 @@ class Post (models.Model):
 
 
 class Comment (models.Model):
-    post = models.ForeignKey('Post', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='comment_post')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comment_user')
     text = models.CharField(max_length=300)
     date_birth = models.DateTimeField(auto_now=True)
     rating = models.IntegerField(default=0)
