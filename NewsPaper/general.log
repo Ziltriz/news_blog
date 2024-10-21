@@ -1,0 +1,31 @@
+2024-10-21 09:00:01,101 INFO Watching for file changes with StatReloader
+2024-10-21 09:07:40,439 INFO Watching for file changes with StatReloader
+2024-10-21 09:20:27,871 INFO Watching for file changes with StatReloader
+2024-10-21 09:22:58,223 INFO Watching for file changes with StatReloader
+2024-10-21 09:25:34,296 INFO Watching for file changes with StatReloader
+2024-10-21 09:26:00,076 INFO "GET / HTTP/1.1" 200 5878
+2024-10-21 09:26:00,135 INFO "GET /static/css/styles.css HTTP/1.1" 200 236765
+2024-10-21 09:26:00,306 WARNING Not Found: /favicon.ico
+2024-10-21 09:26:00,307 WARNING "GET /favicon.ico HTTP/1.1" 404 5974
+2024-10-21 09:26:00,317 WARNING Not Found: /apple-touch-icon-precomposed.png
+2024-10-21 09:26:00,318 WARNING "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 6037
+2024-10-21 09:26:00,382 WARNING Not Found: /apple-touch-icon.png
+2024-10-21 09:26:00,382 WARNING "GET /apple-touch-icon.png HTTP/1.1" 404 6001
+2024-10-21 10:50:59,257 INFO Watching for file changes with StatReloader
+2024-10-21 10:53:23,352 WARNING Not Found: /
+2024-10-21 10:53:23,352 WARNING "GET / HTTP/1.1" 404 5819
+2024-10-21 10:53:37,878 INFO "GET /api/news HTTP/1.1" 301 0
+2024-10-21 10:53:37,898 WARNING Forbidden: /api/news/
+2024-10-21 10:53:37,898 WARNING "GET /api/news/ HTTP/1.1" 403 9970
+2024-10-21 10:53:37,923 INFO "GET /static/rest_framework/css/prettify.css HTTP/1.1" 200 817
+2024-10-21 10:53:37,925 INFO "GET /static/rest_framework/css/bootstrap-tweaks.css HTTP/1.1" 200 3426
+2024-10-21 10:53:37,926 INFO "GET /static/rest_framework/css/default.css HTTP/1.1" 200 1152
+2024-10-21 10:53:37,926 INFO "GET /static/rest_framework/js/ajax-form.js HTTP/1.1" 200 3796
+2024-10-21 10:53:37,927 INFO "GET /static/rest_framework/js/csrf.js HTTP/1.1" 200 1793
+2024-10-21 10:53:37,930 INFO "GET /static/rest_framework/js/default.js HTTP/1.1" 200 1268
+2024-10-21 10:53:37,930 INFO "GET /static/rest_framework/js/prettify-min.js HTTP/1.1" 200 13632
+2024-10-21 10:53:37,930 INFO "GET /static/rest_framework/js/load-ajax-form.js HTTP/1.1" 200 59
+2024-10-21 10:53:37,931 INFO "GET /static/rest_framework/css/bootstrap.min.css HTTP/1.1" 200 121457
+2024-10-21 10:53:37,932 INFO "GET /static/rest_framework/js/bootstrap.min.js HTTP/1.1" 200 39680
+2024-10-21 10:53:37,932 INFO "GET /static/rest_framework/js/jquery-3.7.1.min.js HTTP/1.1" 200 87533
+2024-10-21 10:53:37,959 INFO "GET /static/rest_framework/img/grid.png HTTP/1.1" 200 1458

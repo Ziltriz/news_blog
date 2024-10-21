@@ -1,0 +1,51 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: News Blog Api
+paths:
+  /:
+    get:
+      description: ''
+      operationId: getAllNews
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+          description: ''
+
+components:
+  schemas:
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+        author:
+          type: integer
+          description: 'ForeignKey for Author'
+        type:
+          type: string
+          description: 'Type of news/post'
+        date_published:
+          type: string
+          format: date-time
+          description: 'Date of publication'
+        category:
+          type: string
+          description: 'Category of news/post'
+        article:
+          type: string
+          description: 'Article of news/post'
+        text:
+          type: string
+          description: 'Text of news/post'
+        rating:
+          type: integer
+          description: 'Rating of news/post'
+
+

@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView
 from django.views.decorators.cache import cache_page
 from django.shortcuts import render, redirect
+from rest_framework import viewsets, permissions
+from .serialezers import PostSerializer
 
 from .filters import NewsFilter
 from .models import Post, Category
@@ -27,6 +29,20 @@ def subscribe(request, pk):
         form = SubscriptionForm()
     return render(request, 'subscribe.html', {'form': form})
 
+class ArticleViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all().filter(type='post')
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class NewsViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all().filter(type='news')
+    serializer_class = PostSerializer
+    permissions_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class CategoryList(ListView):
+    model = Category
+    template_name = 'category.html'
+    context_object_name = 'category'
 
 class NewsList(ListView):
     queryset = Post.objects.order_by('-date_birth')

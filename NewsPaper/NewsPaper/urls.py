@@ -14,16 +14,22 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
+from tkinter.font import names
 
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
+from news import views
+
+router = routers.DefaultRouter()
+router.register(r'articles', views.ArticleViewSet, 'articles')
+router.register(r'news', views.NewsViewSet, 'news')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
     path('', include('news.urls')),
     path('accounts/', include('allauth.urls')),
-
+    path('api/', include(router.urls)),
 
 ]
